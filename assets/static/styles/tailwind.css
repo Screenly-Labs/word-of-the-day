@@ -1,0 +1,203 @@
+/* =========================================================================
+   Screenly Word of the Day — "Lexicon entry"
+   One headword presented like the opening of a dictionary entry: the word set
+   monumentally large in Fraunces over a warm ink ground, its pronunciation in
+   /slashes/ picked out in gilt beneath, a gilt hairline marking the break, and
+   the definition set quietly below in Hanken Grotesk. The word itself is the
+   hero — no other ornament. The definition arrives a beat after the word, so a
+   passerby reads the word first, then its meaning. Tuned for unattended signage:
+   legible at distance, no interaction, both orientations.
+   ========================================================================= */
+
+@import 'tailwindcss';
+
+/* Design tokens — also generate utilities (bg-ink, text-gilt, font-display…). */
+@theme {
+  --color-ink: #16140f;
+  --color-paper: #f1ece0;
+  --color-paper-dim: #b7b0a0;
+  --color-gilt: #c9a24b;
+  --font-display: 'Fraunces', ui-serif, Georgia, 'Times New Roman', serif;
+  --font-sans: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Webfonts: self-hosted, vendored from Bun-managed @fontsource (sync-fonts.js).
+   Variable "standard" axis = optical-size + weight. */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/static/fonts/fraunces-latin-standard-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Fraunces';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/static/fonts/fraunces-latin-standard-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/static/fonts/hanken-grotesk-latin-wght-normal.woff2') format('woff2');
+}
+
+@layer base {
+  body {
+    min-height: 100svh;
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+@layer components {
+  .stage {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 100svh;
+    padding: clamp(1.5rem, 6vmin, 4rem);
+    overflow: hidden;
+  }
+
+  /* Centered editorial column. Sizes are driven by vmin so the entry resolves to
+     the same scale in portrait and landscape and grows cleanly 480px → 4K. The
+     column has no fixed max-width: the headword is fitted to the viewport in JS,
+     and the definition carries its own measure (see .entry__def). */
+  .entry {
+    margin: 0;
+    text-align: center;
+  }
+
+  .entry__eyebrow {
+    margin: 0 0 clamp(1.1rem, 3.2vmin, 2.6rem);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(0.78rem, 1.6vmin + 0.3vh, 1.4rem);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-paper-dim);
+  }
+
+  /* The hero: the word itself, set monumentally. Lowercase, as a dictionary
+     headword. Never wraps — main.ts fits it to the available width so any word,
+     short or long, sits on one line at the largest size that fits. The clamp is
+     the upper bound JS scales down from. */
+  .entry__word {
+    margin: 0;
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 380;
+    /* vmin keeps it consistent across orientations; the vh term lets tall
+       portrait screens (and 4K) grow the headword to fill the canvas rather
+       than float small in a vertical void. JS fits it down if it would overflow. */
+    font-size: clamp(3rem, 12vmin + 2.5vh, 20rem);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    white-space: nowrap;
+  }
+
+  /* The dictionary tell: pronunciation in /slashes/, in gilt. The top gap scales
+     with the headword (vmin+vh) so it never crowds the descenders at large sizes. */
+  .entry__pron {
+    margin: clamp(0.8rem, 2.4vmin + 0.5vh, 3rem) 0 0;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: clamp(1rem, 2.6vmin + 0.4vh, 2.2rem);
+    letter-spacing: 0.03em;
+    color: var(--color-gilt);
+  }
+
+  /* Thematic break between the head and the gloss. */
+  .entry__rule {
+    width: clamp(2.4rem, 6vmin, 4.5rem);
+    height: 2px;
+    margin: clamp(1.8rem, 4.2vmin + 0.6vh, 3.4rem) auto;
+    border: 0;
+    background-color: var(--color-gilt);
+  }
+
+  .entry__def {
+    margin: 0 auto;
+    max-width: 22em;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: clamp(1.15rem, 2.9vmin + 0.5vh, 2.7rem);
+    line-height: 1.5;
+    color: var(--color-paper);
+    text-wrap: pretty;
+  }
+
+  .brand {
+    position: fixed;
+    right: clamp(1rem, 3.2vmin, 2.4rem);
+    bottom: clamp(1rem, 3.2vmin, 2.4rem);
+    display: block;
+    opacity: 0.55;
+    transition: opacity 200ms ease;
+    border-radius: 4px;
+    outline-offset: 6px;
+  }
+
+  .brand:hover,
+  .brand:focus-visible {
+    opacity: 0.95;
+  }
+
+  .brand img {
+    display: block;
+    width: auto;
+    height: clamp(13px, 1.3rem, 26px);
+  }
+}
+
+@layer base {
+  /* Orchestrated entrance: the eyebrow, word, and pronunciation settle in first;
+     the hairline draws and the definition fades up a beat later (~2.5s), so the
+     word is read before its meaning. All gated for reduced-motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    .entry__eyebrow {
+      animation: rise-in 800ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+    .entry__word {
+      animation: rise-in 900ms cubic-bezier(0.2, 0.7, 0.2, 1) 120ms both;
+    }
+    .entry__pron {
+      animation: rise-in 900ms cubic-bezier(0.2, 0.7, 0.2, 1) 320ms both;
+    }
+    .entry__rule {
+      animation: draw-in 700ms cubic-bezier(0.2, 0.7, 0.2, 1) 2300ms both;
+    }
+    .entry__def {
+      animation: rise-in 900ms cubic-bezier(0.2, 0.7, 0.2, 1) 2500ms both;
+    }
+  }
+
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.6rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes draw-in {
+    from {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
