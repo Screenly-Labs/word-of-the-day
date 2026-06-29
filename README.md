@@ -6,6 +6,8 @@ and chosen fresh each day.
 
 **Live:** https://word.srly.io
 
+![The word "exquisite" set large in Fraunces over a dark ground, with its pronunciation in gilt and a definition below, captioned "Word of the day · June 29, 2026"](docs/screenshot.png)
+
 The word is selected **deterministically by the calendar date**, so every screen
 shows the same word on a given day and it advances at local midnight — it does
 not rotate or change on reload. A curated set of ~364 interesting-but-usable
