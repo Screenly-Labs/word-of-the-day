@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Word of the Day — Screenly</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A full-screen word of the day for digital signage — one word, its pronunciation, and its meaning, chosen fresh each day."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext x='16' y='25' font-family='Georgia,serif' font-size='28' font-style='italic' text-anchor='middle' fill='%23c9a24b'%3Ea%3C/text%3E%3C/svg%3E"
+    />
+    <link
+      rel="preload"
+      href="/static/fonts/fraunces-latin-standard-normal.woff2?v=__ASSET_VERSION__"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/static/fonts/hanken-grotesk-latin-wght-normal.woff2?v=__ASSET_VERSION__"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="/static/styles/main.css?v=__ASSET_VERSION__" />
+    <script src="/static/js/main.js?v=__ASSET_VERSION__" defer></script>
+  </head>
+  <body>
+    <main class="stage">
+      <article class="entry">
+        <p class="entry__eyebrow">Word of the day<span class="entry__date" id="word-date"></span></p>
+        <h1 class="entry__word" id="word-text">serendipity</h1>
+        <p class="entry__pron" id="word-pronunciation">/ˌsɛrənˈdɪpɪti/</p>
+        <hr class="entry__rule" aria-hidden="true" />
+        <p class="entry__def" id="word-definition">
+          The occurrence of happy or beneficial events by chance.
+        </p>
+      </article>
+      <a
+        class="brand"
+        href="https://www.screenly.io"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Screenly — opens in a new tab"
+      >
+        <img src="/static/images/screenly-logo.svg?v=__ASSET_VERSION__" alt="Screenly" />
+      </a>
+    </main>
+  </body>
+</html>

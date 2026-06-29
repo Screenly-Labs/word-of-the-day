@@ -1,0 +1,12 @@
+dist
+node_modules
+package-lock.json
+
+# Vendored at build from @fontsource (see sync-fonts.js)
+assets/static/fonts/*.woff2
+
+.DS_Store
+**/.DS_Store
+
+# Output of 'npm pack'
+*.tgz
