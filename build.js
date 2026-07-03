@@ -8,6 +8,7 @@
 //   4. bundle TypeScript → browser JS (minified, ./word inlined)
 //   5. stamp a content hash into asset URLs (?v=) for cache-busting
 //   6. write CNAME for the custom domain
+//   7. write .nojekyll so Pages serves .well-known/ verbatim
 // dist/ is gitignored; CI uploads it as the Pages artifact.
 
 import { rm, mkdir, cp, readFile, writeFile } from 'node:fs/promises'
