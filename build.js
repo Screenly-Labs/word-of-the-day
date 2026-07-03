@@ -26,6 +26,11 @@ await mkdir(`${DIST}/static`, { recursive: true })
 await cp('assets/static/fonts', `${DIST}/static/fonts`, { recursive: true })
 await cp('assets/static/images', `${DIST}/static/images`, { recursive: true })
 await cp('assets/static/data', `${DIST}/static/data`, { recursive: true })
+// Signage app manifest served at the well-known path (see docs/app-manifest.md
+// in the app-store repo). GitHub Pages serves .json as application/json and
+// sends Access-Control-Allow-Origin: * on every response, satisfying the
+// manifest's Content-Type and CORS requirements.
+await cp('.well-known', `${DIST}/.well-known`, { recursive: true })
 await cp('index.html', `${DIST}/index.html`)
 
 // 3. Tailwind: compile + minify the source CSS to the served stylesheet.

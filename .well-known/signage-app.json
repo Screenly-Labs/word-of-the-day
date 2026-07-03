@@ -1,0 +1,13 @@
+{
+  "manifestVersion": "1",
+  "id": "word",
+  "name": "Word of the Day",
+  "description": "A full-screen word of the day for any display. Each day it shows one word, its pronunciation, and its meaning, set in a large serif and chosen fresh from the local date.",
+  "summary": "A new word every day, on any display.",
+  "vendor": "Screenly",
+  "tags": ["Words"],
+  "homepage": "https://word.srly.io/",
+  "source": "https://github.com/Screenly-Labs/word-of-the-day",
+  "support": "https://github.com/Screenly-Labs/word-of-the-day/issues",
+  "launch": { "baseUrl": "https://word.srly.io/" }
+}
