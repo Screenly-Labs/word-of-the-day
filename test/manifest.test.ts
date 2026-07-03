@@ -21,13 +21,17 @@ describe('signage-app manifest', () => {
   })
 
   test('has the required identity fields', () => {
+    expect(typeof manifest.id).toBe('string')
     expect(manifest.id).toBe('word')
     expect(manifest.id).toMatch(ID_PATTERN)
+    expect(typeof manifest.name).toBe('string')
     expect(manifest.name.length).toBeGreaterThan(0)
+    expect(typeof manifest.description).toBe('string')
     expect(manifest.description.length).toBeGreaterThan(0)
   })
 
   test('tags are unique strings', () => {
+    expect(Array.isArray(manifest.tags)).toBe(true)
     const tags = manifest.tags ?? []
     for (const t of tags) expect(typeof t).toBe('string')
     expect(new Set(tags).size).toBe(tags.length)
