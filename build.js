@@ -8,6 +8,7 @@
 //   4. bundle TypeScript → browser JS (minified, ./word inlined)
 //   5. stamp a content hash into asset URLs (?v=) for cache-busting
 //   6. write CNAME for the custom domain
+//   7. write .nojekyll so Pages serves .well-known/ verbatim
 // dist/ is gitignored; CI uploads it as the Pages artifact.
 
 import { rm, mkdir, cp, readFile, writeFile } from 'node:fs/promises'
@@ -26,6 +27,11 @@ await mkdir(`${DIST}/static`, { recursive: true })
 await cp('assets/static/fonts', `${DIST}/static/fonts`, { recursive: true })
 await cp('assets/static/images', `${DIST}/static/images`, { recursive: true })
 await cp('assets/static/data', `${DIST}/static/data`, { recursive: true })
+// Signage app manifest served at the well-known path (see docs/app-manifest.md
+// in the app-store repo). GitHub Pages serves .json as application/json and
+// sends Access-Control-Allow-Origin: * on every response, satisfying the
+// manifest's Content-Type and CORS requirements.
+await cp('.well-known', `${DIST}/.well-known`, { recursive: true })
 await cp('index.html', `${DIST}/index.html`)
 
 // 3. Tailwind: compile + minify the source CSS to the served stylesheet.
@@ -80,5 +86,11 @@ console.log(`✓ Stamped asset version ${version}`)
 // 6. Custom domain for GitHub Pages.
 await writeFile(`${DIST}/CNAME`, `${DOMAIN}\n`)
 console.log(`✓ CNAME: ${DOMAIN}`)
+
+// 7. Disable Jekyll so Pages serves files as-is — without this marker a Jekyll
+// build would skip dot-prefixed directories like .well-known/, 404-ing the
+// manifest.
+await writeFile(`${DIST}/.nojekyll`, '')
+console.log('✓ .nojekyll')
 
 console.log('Build complete → dist/')
