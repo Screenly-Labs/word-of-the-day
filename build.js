@@ -86,4 +86,10 @@ console.log(`✓ Stamped asset version ${version}`)
 await writeFile(`${DIST}/CNAME`, `${DOMAIN}\n`)
 console.log(`✓ CNAME: ${DOMAIN}`)
 
+// 7. Disable Jekyll so Pages serves files as-is — without this marker a Jekyll
+// build would skip dot-prefixed directories like .well-known/, 404-ing the
+// manifest.
+await writeFile(`${DIST}/.nojekyll`, '')
+console.log('✓ .nojekyll')
+
 console.log('Build complete → dist/')
