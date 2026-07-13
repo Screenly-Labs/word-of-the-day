@@ -13,7 +13,12 @@
     "dev": "bun run build.js && bunx serve dist"
   },
   "license": "AGPL-3.0-only",
-  "browserslist": ["chrome >= 79", "firefox >= 75", "safari >= 11.1", "edge >= 79"],
+  "browserslist": [
+    "chrome >= 87",
+    "firefox >= 78",
+    "safari >= 14.1",
+    "edge >= 87"
+  ],
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.2.9",
     "@fontsource-variable/hanken-grotesk": "^5.2.8"
