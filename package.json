@@ -13,14 +13,20 @@
     "dev": "bun run build.js && bunx serve dist"
   },
   "license": "AGPL-3.0-only",
+  "browserslist": ["chrome >= 65", "safari >= 11.1", "edge >= 79", "firefox >= 60"],
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.2.9",
     "@fontsource-variable/hanken-grotesk": "^5.2.8"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.1",
+    "@csstools/postcss-cascade-layers": "^6.0.0",
     "@tailwindcss/cli": "^4.1.0",
     "@types/bun": "^1.2.0",
+    "browserslist": "^4.28.6",
+    "esbuild": "^0.28.1",
+    "lightningcss": "^1.32.0",
+    "postcss": "^8.5.18",
     "tailwindcss": "^4.1.0",
     "typescript": "^5.7.0"
   }

@@ -10,3 +10,6 @@ assets/static/fonts/*.woff2
 
 # Output of 'npm pack'
 *.tgz
+
+# Claude Code local worktrees/artifacts
+.claude/
