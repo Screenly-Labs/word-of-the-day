@@ -6,7 +6,8 @@
 // CSS), the JS bundler, and the inline degraded-mode gate all come from
 // @screenly-labs/signage-kit. This file only orchestrates the app-specific steps:
 //   1. vendor fonts from @fontsource (sync-fonts.js)
-//   2. assemble dist/ (index.html + static assets, copied not mutated)
+//   2. assemble dist/ (static assets copied as-is; index.html written with the
+//      degraded-mode gate injected, then version-stamped)
 //   3. compile Tailwind v4 CSS → the kit's CSS pipeline
 //   4. bundle TypeScript → browser JS via the kit's bundler (./word inlined)
 //   5. stamp a content hash into asset URLs (?v=) for cache-busting
