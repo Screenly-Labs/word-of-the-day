@@ -7,6 +7,7 @@
       "dependencies": {
         "@fontsource-variable/fraunces": "^5.2.9",
         "@fontsource-variable/hanken-grotesk": "^5.2.8",
+        "@screenly-labs/signage-kit": "github:Screenly-Labs/signage-kit#2026.7.0",
       },
       "devDependencies": {
         "@biomejs/biome": "^2.5.1",
@@ -138,6 +139,8 @@
     "@parcel/watcher-win32-ia32": ["@parcel/watcher-win32-ia32@2.5.1", "", { "os": "win32", "cpu": "ia32" }, "sha512-c2KkcVN+NJmuA7CGlaGD1qJh1cLfDnQsHjE89E60vUEMlqduHGCdCLJCID5geFVM0dOtA3ZiIO8BoEQmzQVfpQ=="],
 
     "@parcel/watcher-win32-x64": ["@parcel/watcher-win32-x64@2.5.1", "", { "os": "win32", "cpu": "x64" }, "sha512-9lHBdJITeNR++EvSQVUcaZoWupyHfXe1jZvGZ06O/5MflPcuPLtEphScIBL+AiCWBO46tDSHzWyD0uDmmZqsgA=="],
+
+    "@screenly-labs/signage-kit": ["@screenly-labs/signage-kit@github:Screenly-Labs/signage-kit#eb470fb", { "peerDependencies": { "@csstools/postcss-cascade-layers": "^6", "browserslist": "^4", "esbuild": "^0.28", "lightningcss": "^1.32", "postcss": "^8" }, "optionalPeers": ["@csstools/postcss-cascade-layers", "postcss"] }, "Screenly-Labs-signage-kit-eb470fb", "sha512-acuAb2R/77crUjgnT9GFVlNdpgUTzvK5OLRRsZsZ30dZcJ7ThH/f8al2janEIJWC1JoyqTiarJ2x1uAH6In86A=="],
 
     "@tailwindcss/cli": ["@tailwindcss/cli@4.3.1", "", { "dependencies": { "@parcel/watcher": "2.5.1", "@tailwindcss/node": "4.3.1", "@tailwindcss/oxide": "4.3.1", "enhanced-resolve": "5.21.6", "mri": "^1.2.0", "picocolors": "^1.1.1", "tailwindcss": "4.3.1" }, "bin": { "tailwindcss": "dist/index.mjs" } }, "sha512-ZWPy20rF+TBfTImxDMG3Wr75Y3RpaPlo9lc+oJbInlMyjT+XPkTVKVIL5RZ7JirXuIahcfHoLNFRmDorKi+JQQ=="],
 
