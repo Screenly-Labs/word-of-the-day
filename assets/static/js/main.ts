@@ -5,6 +5,7 @@
 // Side-effect import: installs the replaceChildren shim for the older-browser
 // degraded mode. Must stay first so the shim is in place before any render.
 import '@screenly-labs/signage-kit/polyfills'
+import { removeScreenlyBranding } from '@screenly-labs/signage-kit/branding'
 
 import { isWordEntry, pickIndexForDate, type WordEntry } from './word'
 
@@ -68,15 +69,6 @@ const loadWord = async (today: Date): Promise<WordEntry> => {
   } catch (error) {
     console.error('Word of the day: using fallback —', error)
     return FALLBACK
-  }
-}
-
-// On a Screenly player the viewer is already a Screenly customer, so the
-// promotional Screenly badge is removed. The 'screenly-viewer' token in the
-// user agent marks these devices; every other browser keeps the badge.
-const removeScreenlyBranding = (): void => {
-  if (navigator.userAgent.includes('screenly-viewer')) {
-    document.querySelector('.brand')?.remove()
   }
 }
 
