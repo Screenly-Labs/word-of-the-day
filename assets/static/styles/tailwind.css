@@ -10,6 +10,10 @@
    ========================================================================= */
 
 @import 'tailwindcss';
+/* Shared base (brand tokens + fluid root + the degraded-mode kill-switch) from
+   @screenly-labs/signage-kit. The app's own @theme + component styles below layer
+   on top; the design identity stays here, per-app. */
+@import '@screenly-labs/signage-kit/styles/preset.css';
 
 /* Design tokens — also generate utilities (bg-ink, text-gilt, font-display…). */
 @theme {
@@ -205,14 +209,9 @@
 }
 
 /* =========================================================================
-   Degraded mode — old/weak signage players (html.legacy set by the inline gate
-   in index.html). Assume the device can't afford animation; drop it entirely.
-   Content stays legible without the entrance (it only animates the reveal).
+   Degraded mode — old/weak signage players (html.legacy set by the inline gate,
+   now injected at build from @screenly-labs/signage-kit). The generic kill-switch
+   that drops all animation/transition comes from the kit's preset, imported
+   above; this app has no resting state to restore beyond it, since the entrance
+   only animates the reveal and the content stays legible without it.
    ========================================================================= */
-html.legacy *,
-html.legacy *::before,
-html.legacy *::after {
-  animation: none !important;
-  transition: none !important;
-  will-change: auto !important;
-}
