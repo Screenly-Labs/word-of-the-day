@@ -12,10 +12,22 @@
 // dist/ is gitignored; CI uploads it as the Pages artifact.
 
 import { rm, mkdir, cp, readFile, writeFile } from 'node:fs/promises'
+import cascadeLayers from '@csstools/postcss-cascade-layers'
+import browserslist from 'browserslist'
+import { build as esbuild } from 'esbuild'
+import { browserslistToTargets, transform as lightningcss } from 'lightningcss'
+import postcss from 'postcss'
 import { run as syncFonts } from './sync-fonts.js'
 
 const DIST = 'dist'
 const DOMAIN = 'word.srly.io'
+
+// The `browserslist` field in package.json is the CSS support floor: Lightning
+// CSS down-levels the stylesheet to it. The JS is lowered separately by esbuild to
+// a fixed ES2017 syntax floor (kept at/below the browserslist minimum); esbuild
+// can't read browserslist, so keep the two in sync if you change the floor. See
+// the degraded-mode notes in index.html / tailwind.css.
+const cssTargets = browserslistToTargets(browserslist())
 
 // 1. Vendor the Bun-managed webfonts into ./assets before copying.
 await syncFonts()
@@ -24,6 +36,9 @@ await syncFonts()
 // the page shell. Sources are never minified in place.
 await rm(DIST, { recursive: true, force: true })
 await mkdir(`${DIST}/static`, { recursive: true })
+// Create the output subdirs up front so Tailwind/esbuild never race an absent dir.
+await mkdir(`${DIST}/static/styles`, { recursive: true })
+await mkdir(`${DIST}/static/js`, { recursive: true })
 await cp('assets/static/fonts', `${DIST}/static/fonts`, { recursive: true })
 await cp('assets/static/images', `${DIST}/static/images`, { recursive: true })
 await cp('assets/static/data', `${DIST}/static/data`, { recursive: true })
@@ -34,15 +49,18 @@ await cp('assets/static/data', `${DIST}/static/data`, { recursive: true })
 await cp('.well-known', `${DIST}/.well-known`, { recursive: true })
 await cp('index.html', `${DIST}/index.html`)
 
-// 3. Tailwind: compile + minify the source CSS to the served stylesheet.
+// 3. Tailwind: compile the source CSS (unminified), then down-level + minify it
+// for the browserslist floor. cascade-layers flattens @layer into :not(#\#)
+// specificity so the cascade survives on engines that drop @layer contents;
+// Lightning CSS then lowers color-mix()/nesting, adds prefixes, and minifies.
+const cssOut = `${DIST}/static/styles/main.css`
 const tailwind = Bun.spawn(
   [
     'node_modules/.bin/tailwindcss',
     '--input',
     'assets/static/styles/tailwind.css',
     '--output',
-    `${DIST}/static/styles/main.css`,
-    '--minify'
+    cssOut
   ],
   { stdout: 'inherit', stderr: 'inherit' }
 )
@@ -50,23 +68,43 @@ if ((await tailwind.exited) !== 0) {
   console.error('✗ Tailwind build failed')
   process.exit(1)
 }
-console.log(`✓ CSS: ${DIST}/static/styles/main.css`)
-
-// 4. TypeScript → browser JS. main.ts imports ./word; external:[] inlines it
-// so the output is a single self-contained classic script.
-const js = await Bun.build({
-  entrypoints: ['assets/static/js/main.ts'],
-  minify: true,
-  target: 'browser',
-  external: []
-})
-if (!js.success) {
-  console.error('✗ JS build failed')
-  for (const message of js.logs) console.error(message)
+try {
+  const flattened = await postcss([cascadeLayers()]).process(await readFile(cssOut, 'utf8'), {
+    from: cssOut
+  })
+  const { code: cssCode } = lightningcss({
+    filename: cssOut,
+    code: Buffer.from(flattened.css),
+    minify: true,
+    targets: cssTargets
+  })
+  await writeFile(cssOut, cssCode)
+} catch (err) {
+  console.error(`✗ CSS build failed (${cssOut})`)
+  console.error(err)
   process.exit(1)
 }
-await Bun.write(`${DIST}/static/js/main.js`, await js.outputs[0].text())
-console.log(`✓ JS: ${DIST}/static/js/main.js`)
+console.log(`✓ CSS: ${cssOut} (Tailwind → cascade-layers flatten → Lightning CSS)`)
+
+// 4. TypeScript → browser JS with esbuild. Bundles main.ts (inlining ./word
+// and the polyfills shim), lowers modern syntax (?., ??, spread) to the ES2017
+// floor so old engines can parse it, and emits an IIFE so the output stays a
+// self-contained self-executing classic script loadable from a plain <script>.
+try {
+  await esbuild({
+    entryPoints: ['assets/static/js/main.ts'],
+    bundle: true,
+    minify: true,
+    format: 'iife',
+    target: ['es2017'],
+    outfile: `${DIST}/static/js/main.js`
+  })
+} catch (err) {
+  console.error('✗ JS build failed')
+  console.error(err)
+  process.exit(1)
+}
+console.log(`✓ JS: ${DIST}/static/js/main.js (esbuild, iife, es2017)`)
 
 // 5. Cache-busting: hash the built JS + CSS + data so the token changes exactly
 // when shipped content changes, then stamp it into the page's asset URLs.
