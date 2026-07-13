@@ -1,4 +1,4 @@
-// Browser entry. Bun bundles this (inlining ./word) into a self-contained
+// Browser entry. esbuild bundles this (inlining ./word) into a self-contained
 // classic script with no exports, so it loads from a plain <script>. Keep it
 // export-free and free of top-level await.
 
