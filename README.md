@@ -46,8 +46,10 @@ bun run build      # build the static site into ./dist
 
 ## Deploy
 
-Pushing to `master` runs `.github/workflows/deploy-pages.yml`, which builds the
-site and deploys `./dist` to GitHub Pages. PRs run `ci.yml` (typecheck, lint,
+Deploys are **tag-driven**. Pushing a CalVer tag (`YYYY.N`, e.g. `2026.8.0`)
+runs `.github/workflows/deploy-pages.yml`, which builds the site and deploys
+`./dist` to GitHub Pages; it also accepts `workflow_dispatch`. Pushing to
+`master` on its own does **not** deploy. PRs run `ci.yml` (typecheck, lint,
 test, build).
 
 First-time setup (one-off, outside this repo):
