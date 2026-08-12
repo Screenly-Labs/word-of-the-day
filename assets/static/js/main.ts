@@ -5,7 +5,9 @@
 // Side-effect import: installs the replaceChildren shim for the older-browser
 // degraded mode. Must stay first so the shim is in place before any render.
 import '@screenly-labs/signage-kit/polyfills'
+import { trackPlayer } from '@screenly-labs/signage-kit/analytics'
 import { removeScreenlyBranding } from '@screenly-labs/signage-kit/branding'
+import { detectPlayer } from '@screenly-labs/signage-kit/profiler'
 
 import { isWordEntry, pickIndexForDate, type WordEntry } from './word'
 
@@ -74,6 +76,10 @@ const loadWord = async (today: Date): Promise<WordEntry> => {
 
 const init = (): void => {
   removeScreenlyBranding()
+  // Report which player is showing this. A static app can only profile from the
+  // user agent and referrer; the Worker apps additionally read X-Requested-With,
+  // the only signal that names an Android WebView vendor.
+  trackPlayer(detectPlayer(), { app: 'word-of-the-day' })
   // One date drives both the word selection and the displayed date, so they
   // always agree (the local calendar day).
   const today = new Date()
