@@ -9,7 +9,10 @@
         dataLayer.push(arguments);
       }
       gtag('js', new Date());
-      gtag('config', 'G-RGDJSDBH5Z');
+      // The automatic page view is suppressed because it fires before main.js can
+      // profile the player, so it would carry no player fields. trackPlayer sends it
+      // instead, once the profile is known (sendPageView: true). Set both or neither.
+      gtag('config', 'G-RGDJSDBH5Z', { send_page_view: false });
     </script>
     <meta charset="utf-8" />
     <title>Word of the Day — Screenly</title>
