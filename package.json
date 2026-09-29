@@ -21,7 +21,7 @@
     "@csstools/postcss-cascade-layers": "^6.0.0",
     "@tailwindcss/cli": "^4.3.3",
     "@types/bun": "^1.4.2",
-    "browserslist": "^4.29.0",
+    "browserslist": "^4.29.1",
     "esbuild": "^0.28.2",
     "lightningcss": "^1.33.0",
     "postcss": "^8.5.28",
