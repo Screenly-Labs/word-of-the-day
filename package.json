@@ -17,11 +17,11 @@
     "@screenly-labs/signage-kit": "github:Screenly-Labs/signage-kit#2026.8.10"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.14",
-    "@csstools/postcss-cascade-layers": "^6.0.0",
+    "@biomejs/biome": "^2.5.15",
+    "@csstools/postcss-cascade-layers": "^6.0.1",
     "@tailwindcss/cli": "^4.3.3",
     "@types/bun": "^1.4.2",
-    "browserslist": "^4.29.1",
+    "browserslist": "^4.29.3",
     "esbuild": "^0.28.2",
     "lightningcss": "^1.33.0",
     "postcss": "^8.5.28",
