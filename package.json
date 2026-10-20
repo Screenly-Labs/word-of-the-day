@@ -20,11 +20,11 @@
     "@biomejs/biome": "^2.5.15",
     "@csstools/postcss-cascade-layers": "^6.0.2",
     "@tailwindcss/cli": "^4.3.3",
-    "@types/bun": "^1.4.2",
+    "@types/bun": "^1.4.3",
     "browserslist": "^4.29.3",
     "esbuild": "^0.28.2",
     "lightningcss": "^1.33.0",
-    "postcss": "^8.5.29",
+    "postcss": "^8.5.30",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2"
   }
